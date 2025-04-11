@@ -100,7 +100,7 @@ k6 run loadtest.js
 ![alt text](image-1.png)
 
 Les tests de charge k6 montrent que l'application supporte bien un trafic de 50 utilisateurs simultanés, avec des temps de réponse excellents (avg 4.8ms). Les seules erreurs détectées viennent des accès concurrents au fichier data.json, ce qui confirme la nécessité de migrer le stockage des utilisateurs vers une base de données (DynamoDB ou RDS) pour garantir la stabilité en production.
----
+
 
 ## 2. Build + Push de l'image scalable-python-app sur AWS ECR
 L'image Docker a été construite et poussée vers AWS ECR pour être déployée via ECS Fargate.
@@ -147,6 +147,7 @@ Une cible d'auto-scaling a été définie pour permettre à notre service ECS de
 
 Politique d'Auto-Scaling basée sur l'utilisation du CPU
 Une politique d'auto-scaling a été définie pour que l'application maintienne une utilisation moyenne du CPU à 50%. Cela permet d'ajuster dynamiquement le nombre de tâches ECS en fonction de la charge CPU.
+
 ![alt text](image-6.png)
 ![alt text](image-7.png)
 ---
