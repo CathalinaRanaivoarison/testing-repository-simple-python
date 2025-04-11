@@ -1,4 +1,6 @@
 import os
+# print("SECRET_KEY:", os.getenv("SECRET_KEY"))
+# print("DATA_FILE_PATH:", os.getenv("DATA_FILE_PATH"))
 from datetime import timedelta
 
 from dotenv import load_dotenv

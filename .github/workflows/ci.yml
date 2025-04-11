@@ -1,0 +1,55 @@
+name: CI/CD - DevOps Python App
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch: 
+
+env:
+  AWS_REGION: eu-west-3
+  ECR_REPOSITORY: scalable-flask-app
+  IMAGE_TAG: latest
+
+jobs:
+  ci-cd:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install flake8
+
+      - name: Lint Python (flake8)
+        run: flake8 src/ --count --select=E9,F63,F7,F82 --show-source --statistics
+
+      - name: Docker Build
+        run: docker build -t scalable-python-app .
+
+      - name: Login to Amazon ECR
+        if: github.ref == 'refs/heads/main'
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Docker Push to ECR
+        if: github.ref == 'refs/heads/main'
+        run: |
+          docker tag scalable-python-app ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+
+      - name: Deploy to ECS Fargate
+        if: github.ref == 'refs/heads/main'
+        run: |
+          aws ecs update-service \
+            --cluster scalable-flask-app-cluster \
+            --service scalable-flask-app-service \
+            --force-new-deployment

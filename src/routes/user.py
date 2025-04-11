@@ -34,3 +34,7 @@ def get_user_id():
 @jwt_required()
 def get_hello():
     return f"Hello {capitalize_name(current_user['username'])}"
+
+@user_bp.route("/", methods=["GET"])
+def home():
+    return jsonify({"message": "Welcome to the DevOps Python APPP"})
