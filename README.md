@@ -169,6 +169,8 @@ k6 run load-test.js
     - Push vers AWS ECR
     - Déploiement automatique vers ECS Fargate
 
+    ![alt text](image-8.png)
+
 ---
 
 ## Architecture AWS cible
