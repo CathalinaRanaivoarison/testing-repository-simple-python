@@ -15,5 +15,6 @@ data.json
 tests/
 
 
-.terraform/
+infra/.terraform/
+
 
