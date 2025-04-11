@@ -93,11 +93,11 @@ CMD ["gunicorn", "-b", "0.0.0.0:8888", "src:application", "-w", "4", "--threads"
 docker build -t scalable-python-app .
 docker run --rm -p 8888:8888 --env-file .env scalable-python-app
 
-![alt text](image.png)
+![alt text](capture/image.png)
 
 k6 run loadtest.js
 
-![alt text](image-1.png)
+![alt text](capture/image-1.png)
 
 Les tests de charge k6 montrent que l'application supporte bien un trafic de 50 utilisateurs simultanés, avec des temps de réponse excellents (avg 4.8ms). Les seules erreurs détectées viennent des accès concurrents au fichier data.json, ce qui confirme la nécessité de migrer le stockage des utilisateurs vers une base de données (DynamoDB ou RDS) pour garantir la stabilité en production.
 
@@ -113,7 +113,7 @@ docker buildx build --platform linux/amd64 -t scalable-python-app . --load
  Push l'image dans ECR
 docker push 218217741215.dkr.ecr.eu-west-3.amazonaws.com/scalable-flask-app:latest
 
-![alt text](image-2.png)
+![alt text](capture/image-2.png)
 
 ### 3. Infrastructure AWS cible
 
@@ -130,8 +130,8 @@ terraform plan
 terraform apply
 terraform output
 
-![alt text](image-3.png)
-![alt text](image-4.png)
+![alt text](capture/image-3.png)
+![alt text](capture/image-4.png)
 
 http://scalable-flask-app-alb-361397395.eu-west-3.elb.amazonaws.com/
 ---
@@ -148,15 +148,15 @@ Une cible d'auto-scaling a été définie pour permettre à notre service ECS de
 Politique d'Auto-Scaling basée sur l'utilisation du CPU
 Une politique d'auto-scaling a été définie pour que l'application maintienne une utilisation moyenne du CPU à 50%. Cela permet d'ajuster dynamiquement le nombre de tâches ECS en fonction de la charge CPU.
 
-![alt text](image-6.png)
-![alt text](image-7.png)
+![alt text](capture/image-6.png)
+![alt text](capture/image-7.png)
 ---
 
 ### 5. Tests de charge avec k6
 - Tests de montée en charge automatisés via k6 pour vérifier le comportement de l'API sous plusieurs milliers de requêtes simultanées.
 k6 run load-test.js
 
-![alt text](image-5.png)
+![alt text](capture/image-5.png)
 
 ---
 
@@ -169,7 +169,7 @@ k6 run load-test.js
     - Push vers AWS ECR
     - Déploiement automatique vers ECS Fargate
 
-    ![alt text](image-8.png)
+    ![alt text](capture/image-8.png)
 
 ---
 

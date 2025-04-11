@@ -3,7 +3,7 @@ name: CI/CD - DevOps Python App
 on:
   push:
     branches: [main]
-  pull_request:
+    
   workflow_dispatch: 
 
 env:
