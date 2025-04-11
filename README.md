@@ -43,8 +43,6 @@ python app.py
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
 
-
-```markdown
 # Projet Python Flask - Préparation Production & Scalabilité AWS
 
 ## Contexte
@@ -149,7 +147,8 @@ Une cible d'auto-scaling a été définie pour permettre à notre service ECS de
 
 Politique d'Auto-Scaling basée sur l'utilisation du CPU
 Une politique d'auto-scaling a été définie pour que l'application maintienne une utilisation moyenne du CPU à 50%. Cela permet d'ajuster dynamiquement le nombre de tâches ECS en fonction de la charge CPU.
-
+![alt text](image-6.png)
+![alt text](image-7.png)
 ---
 
 ### 5. Tests de charge avec k6
